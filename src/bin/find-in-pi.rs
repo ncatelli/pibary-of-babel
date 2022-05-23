@@ -1,7 +1,7 @@
 use pibary_of_babel::*;
 use sliding_windows::{IterExt, Storage};
 
-const USAGE: &str = "pibary-of-babel <input>";
+const USAGE: &str = "find-in-pi <input>";
 
 fn main() -> Result<(), String> {
     let args = std::env::args().skip(1).collect::<Vec<_>>();
