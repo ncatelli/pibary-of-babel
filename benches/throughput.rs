@@ -6,7 +6,7 @@ pub fn generator_throughtput(c: &mut Criterion) {
     group.throughput(Throughput::Bytes(1024 * 1024));
 
     group.bench_function("pi throughtput", |b| {
-        let mut pi = Pi::new();
+        let mut pi = DigitsOfPi::new();
         b.iter(|| {
             let _ = black_box(pi.next());
         })

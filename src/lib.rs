@@ -1,13 +1,13 @@
 use num::{BigInt, ToPrimitive};
 
 pub struct ByteGenerator {
-    generator: Pi,
+    generator: DigitsOfPi,
 }
 
 impl ByteGenerator {
     pub fn new() -> Self {
         Self {
-            generator: Pi::new(),
+            generator: DigitsOfPi::new(),
         }
     }
 }
@@ -31,7 +31,8 @@ impl Iterator for ByteGenerator {
     }
 }
 
-pub struct Pi {
+/// Returns the digits of pi, skipping the decimal, i.e. `31415`
+pub struct DigitsOfPi {
     q: BigInt,
     r: BigInt,
     t: BigInt,
@@ -41,7 +42,7 @@ pub struct Pi {
     first: bool,
 }
 
-impl Pi {
+impl DigitsOfPi {
     pub fn new() -> Self {
         Self {
             q: BigInt::from(1),
@@ -55,13 +56,13 @@ impl Pi {
     }
 }
 
-impl Default for Pi {
+impl Default for DigitsOfPi {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl Iterator for Pi {
+impl Iterator for DigitsOfPi {
     type Item = u8;
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -86,6 +87,34 @@ impl Iterator for Pi {
                 self.n = nn;
                 self.r = nr;
             }
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+
+    use std::f64::consts;
+
+    #[test]
+    fn should_generate_equivalent_pi_value_to_stdlib_constant() {
+        let pi_const = consts::PI.to_string();
+        let pi_generated = super::DigitsOfPi::new();
+
+        // append a 3 and skip the `3.` from the pi constant. to normalize to only digits
+        let digits_of_pi_const = "3"
+            .chars()
+            .chain(pi_const.chars().skip(2))
+            // it's safe to assume these will always be representable as a u8 as the digit will never exceed `0-9`.
+            .map(|ascii_digit| ascii_digit.to_digit(10).map(|digit| digit as u8).unwrap());
+        let pairing = digits_of_pi_const.zip(pi_generated);
+
+        for (idx, (expected, got)) in pairing.enumerate() {
+            assert_eq!(
+                &expected, &got,
+                "failed at index: {}\nexpected: {}, got: {}",
+                idx, &expected, &got
+            )
         }
     }
 }
