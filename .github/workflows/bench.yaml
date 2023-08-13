@@ -1,0 +1,23 @@
+name: Benchmark
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_test:
+    name: Bench
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          clean: false
+      - uses: dtolnay/rust-toolchain@stable
+      - name: measure benchmarks on branch
+        run: cargo bench 
+      - name: upload benchmark report
+        uses: actions/upload-artifact@v1
+        with:
+          name: Benchmark report
+          path: target/criterion/
