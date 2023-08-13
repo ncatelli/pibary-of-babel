@@ -15,7 +15,7 @@ fn main() -> Result<(), String> {
     let data = input.as_bytes();
     let mut storage: Storage<u8> = Storage::new(data.len());
 
-    let found = ByteGenerator::new()
+    let found = ByteGenerator::new(Spigot::new())
         .take(usize::MAX)
         .sliding_windows(&mut storage)
         .position(|window| window == data);
