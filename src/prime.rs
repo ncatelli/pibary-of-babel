@@ -16,14 +16,10 @@ impl MaybePrime for i64 {
 
         let sqrt = n.sqrt() + 1;
 
-        let range = (6..).step_by(6).take_while(|val| val <= &sqrt);
-        for i in range {
-            if (n.rem_euclid(i - 1) == 0) || (n.rem_euclid(i + 1) == 0) {
-                return false;
-            }
-        }
-
-        true
+        !(6..)
+            .step_by(6)
+            .take_while(|val| val <= &sqrt)
+            .any(|i| (n.rem_euclid(i - 1) == 0) || (n.rem_euclid(i + 1) == 0))
     }
 }
 
@@ -39,14 +35,10 @@ impl MaybePrime for i32 {
 
         let sqrt = n.sqrt() + 1;
 
-        let range = (6..).step_by(6).take_while(|val| val <= &sqrt);
-        for i in range {
-            if (n.rem_euclid(i - 1) == 0) || (n.rem_euclid(i + 1) == 0) {
-                return false;
-            }
-        }
-
-        true
+        !(6..)
+            .step_by(6)
+            .take_while(|val| val <= &sqrt)
+            .any(|i| (n.rem_euclid(i - 1) == 0) || (n.rem_euclid(i + 1) == 0))
     }
 }
 
