@@ -6,7 +6,7 @@ fn main() {
     let mut stdout_lock = stdout.lock();
 
     print!("3.");
-    for digit in Pi::new().skip(1).take(usize::MAX) {
+    for digit in Spigot::new().skip(1).take(usize::MAX) {
         let _ = write!(&mut stdout_lock, "{:?}", digit);
     }
 }
